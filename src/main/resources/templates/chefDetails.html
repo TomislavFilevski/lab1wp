@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Chef Details</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px;
+            margin: 5px 0;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 th:text="'Chef: ' + ${chef.firstName} + ' ' + ${chef.lastName}">Chef: Gordon Ramsay</h1>
+</header>
+<section>
+    <h2 th:text="'Bio: ' + ${chef.bio}">Bio: World-renowned chef with 16 Michelin stars</h2>
+
+    <h2>Dishes prepared by this chef:</h2>
+
+    <div th:if="${chef.dishes != null and !chef.dishes.isEmpty()}">
+        <ul>
+            <li th:each="dish : ${chef.dishes}">
+                    <span th:text="${dish.name} + ' (' + ${dish.cuisine} + ', ' + ${dish.preparationTime} + ' min)'">
+                        Beef Wellington (British, 45 min)
+                    </span>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${chef.dishes == null or chef.dishes.isEmpty()}">
+        <p>This chef has no dishes yet.</p>
+    </div>
+
+    <br/>
+    <a href="/listChefs">Back to Chef List</a>
+</section>
+</body>
+</html>
