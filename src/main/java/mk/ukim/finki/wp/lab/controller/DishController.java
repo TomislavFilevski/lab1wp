@@ -1,0 +1,70 @@
+package mk.ukim.finki.wp.lab.controller;
+
+import mk.ukim.finki.wp.lab.model.Dish;
+import mk.ukim.finki.wp.lab.service.DishService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/dishes")
+public class DishController {
+
+    private final DishService dishService;
+
+    public DishController(DishService dishService) {
+        this.dishService = dishService;
+    }
+
+    @GetMapping
+    public String getDishesPage(@RequestParam(required = false) String error, Model model) {
+        List<Dish> dishes = dishService.listDishes();
+        model.addAttribute("dishes", dishes);
+        model.addAttribute("error", error);
+        return "listDishes";
+    }
+
+    @PostMapping("/add")
+    public String saveDish(@RequestParam String dishId,
+                           @RequestParam String name,
+                           @RequestParam String cuisine,
+                           @RequestParam int preparationTime) {
+        dishService.create(dishId, name, cuisine, preparationTime);
+        return "redirect:/dishes";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editDish(@PathVariable Long id,
+                           @RequestParam String dishId,
+                           @RequestParam String name,
+                           @RequestParam String cuisine,
+                           @RequestParam int preparationTime) {
+        dishService.update(id, dishId, name, cuisine, preparationTime);
+        return "redirect:/dishes";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteDish(@PathVariable Long id) {
+        dishService.delete(id);
+        return "redirect:/dishes";
+    }
+
+    @GetMapping("/dish-form")
+    public String getAddDishPage(Model model) {
+        return "dish-form";
+    }
+
+    @GetMapping("/dish-form/{id}")
+    public String getEditDishForm(@PathVariable Long id, Model model) {
+        Dish dish = dishService.findById(id);
+
+        if (dish == null) {
+            return "redirect:/dishes?error=DishNotFound";
+        }
+
+        model.addAttribute("dish", dish);
+        return "dish-form";
+    }
+}

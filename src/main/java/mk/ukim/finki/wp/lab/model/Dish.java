@@ -1,44 +1,54 @@
 package mk.ukim.finki.wp.lab.model;
 
 public class Dish {
+    private Long id;
     private String dishId;
     private String name;
     private String cuisine;
     private int preparationTime;
 
-    public Dish(String dishId, String name, String cuisine, int preparationTime) {
+    public Dish(Long id, String dishId, String name, String cuisine, int preparationTime) {
+        this.id = id;
         this.dishId = dishId;
         this.name = name;
         this.cuisine = cuisine;
         this.preparationTime = preparationTime;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getDishId() {
         return dishId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getCuisine() {
-        return cuisine;
-    }
-
-    public int getPreparationTime() {
-        return preparationTime;
     }
 
     public void setDishId(String dishId) {
         this.dishId = dishId;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getCuisine() {
+        return cuisine;
+    }
+
     public void setCuisine(String cuisine) {
         this.cuisine = cuisine;
+    }
+
+    public int getPreparationTime() {
+        return preparationTime;
     }
 
     public void setPreparationTime(int preparationTime) {

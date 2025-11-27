@@ -1,6 +1,5 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
-import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
 import mk.ukim.finki.wp.lab.model.Chef;
 import mk.ukim.finki.wp.lab.model.Dish;
 import mk.ukim.finki.wp.lab.repository.ChefRepository;
@@ -47,5 +46,6 @@ public class ChefServiceImpl implements ChefService {
         Chef chef = chefOptional.get();
         chef.addDish(dish);
 
-        return chefRepository.save(chef);    }
+        return chefRepository.save(chef);
+    }
 }

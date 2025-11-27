@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class InMemoryChefRepository implements ChefRepository{
+public class InMemoryChefRepository implements ChefRepository {
 
     @Override
     public List<Chef> findAll() {
@@ -17,12 +17,14 @@ public class InMemoryChefRepository implements ChefRepository{
 
     @Override
     public Optional<Chef> findById(Long id) {
-        return DataHolder.chefs.stream().filter(chef -> chef.getId().equals(id)).findFirst();
+        return DataHolder.chefs.stream()
+                .filter(chef -> chef.getId().equals(id))
+                .findFirst();
     }
 
     @Override
     public Chef save(Chef chef) {
-        if (chef.getId() != null){
+        if (chef.getId() != null) {
             DataHolder.chefs.removeIf(c -> c.getId().equals(chef.getId()));
         }
         DataHolder.chefs.add(chef);
