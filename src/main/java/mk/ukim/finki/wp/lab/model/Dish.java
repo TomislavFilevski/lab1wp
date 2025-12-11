@@ -1,14 +1,28 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "dishes")
 public class Dish {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String dishId;
     private String name;
     private String cuisine;
     private int preparationTime;
 
-    public Dish(Long id, String dishId, String name, String cuisine, int preparationTime) {
-        this.id = id;
+    @ManyToOne
+    @JoinColumn(name = "chef_id")
+    private Chef chef;
+
+    public Dish() {
+    }
+
+    public Dish(String dishId, String name, String cuisine, int preparationTime) {
         this.dishId = dishId;
         this.name = name;
         this.cuisine = cuisine;
@@ -53,5 +67,13 @@ public class Dish {
 
     public void setPreparationTime(int preparationTime) {
         this.preparationTime = preparationTime;
+    }
+
+    public Chef getChef() {
+        return chef;
+    }
+
+    public void setChef(Chef chef) {
+        this.chef = chef;
     }
 }

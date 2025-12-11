@@ -1,21 +1,35 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "chefs")
 public class Chef {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String firstName;
     private String lastName;
     private String bio;
-    private List<Dish> dishes;
 
-    public Chef(Long id, String firstName, String lastName, String bio) {
-        this.id = id;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @OneToMany(mappedBy = "chef", cascade = CascadeType.ALL)
+    private List<Dish> dishes = new ArrayList<>();
+
+    public Chef() {
+    }
+
+    public Chef(String firstName, String lastName, String bio, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.bio = bio;
-        this.dishes = new ArrayList<>();
+        this.gender = gender;
     }
 
     public Long getId() {
@@ -50,6 +64,14 @@ public class Chef {
         this.bio = bio;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     public List<Dish> getDishes() {
         return dishes;
     }
@@ -59,12 +81,12 @@ public class Chef {
     }
 
     public void addDish(Dish dish) {
-        if (dish != null && !this.dishes.contains(dish)) {
-            this.dishes.add(dish);
-        }
+        dishes.add(dish);
+        dish.setChef(this);
     }
 
     public void removeDish(Dish dish) {
-        this.dishes.remove(dish);
+        dishes.remove(dish);
+        dish.setChef(null);
     }
 }

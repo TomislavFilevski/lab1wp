@@ -3,112 +3,35 @@
 <head>
     <meta charset="utf-8">
     <title th:text="${dish != null ? 'Edit Dish' : 'Add New Dish'}">Dish Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            max-width: 600px;
-        }
-        h1 {
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        input:focus {
-            border-color: #4CAF50;
-            outline: none;
-        }
-        .btn {
-            padding: 10px 20px;
-            margin-right: 10px;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            font-size: 14px;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-submit {
-            background-color: #4CAF50;
-        }
-        .btn-submit:hover {
-            background-color: #45a049;
-        }
-        .btn-cancel {
-            background-color: #f44336;
-        }
-        .btn-cancel:hover {
-            background-color: #da190b;
-        }
-    </style>
 </head>
 <body>
 <h1 th:text="${dish != null ? 'Edit Dish' : 'Add New Dish'}">Dish Form</h1>
 
-<form th:action="${dish != null ? '/dishes/edit/' + dish.id : '/dishes/add'}"
-      method="post">
+<form th:action="${dish != null ? '/dishes/edit/' + dish.id : '/dishes/add'}" method="post">
 
-    <div class="form-group">
-        <label for="dishId">Dish ID:</label>
-        <input type="text"
-               id="dishId"
-               name="dishId"
-               th:value="${dish != null ? dish.dishId : ''}"
-               placeholder="Enter dish ID (e.g., D001)"
-               required>
-    </div>
+    <label>Dish ID:</label><br>
+    <input type="text" name="dishId" th:value="${dish != null ? dish.dishId : ''}" required><br><br>
 
-    <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text"
-               id="name"
-               name="name"
-               th:value="${dish != null ? dish.name : ''}"
-               placeholder="Enter dish name"
-               required>
-    </div>
+    <label>Name:</label><br>
+    <input type="text" name="name" th:value="${dish != null ? dish.name : ''}" required><br><br>
 
-    <div class="form-group">
-        <label for="cuisine">Cuisine:</label>
-        <input type="text"
-               id="cuisine"
-               name="cuisine"
-               th:value="${dish != null ? dish.cuisine : ''}"
-               placeholder="Enter cuisine type (e.g., Italian)"
-               required>
-    </div>
+    <label>Cuisine:</label><br>
+    <input type="text" name="cuisine" th:value="${dish != null ? dish.cuisine : ''}" required><br><br>
 
-    <div class="form-group">
-        <label for="preparationTime">Preparation Time (minutes):</label>
-        <input type="number"
-               id="preparationTime"
-               name="preparationTime"
-               th:value="${dish != null ? dish.preparationTime : ''}"
-               placeholder="Enter preparation time in minutes"
-               min="1"
-               required>
-    </div>
+    <label>Preparation Time (minutes):</label><br>
+    <input type="number" name="preparationTime" th:value="${dish != null ? dish.preparationTime : ''}" required><br><br>
 
-    <button type="submit" class="btn btn-submit">
-        <span th:text="${dish != null ? 'Update Dish' : 'Add Dish'}">Submit</span>
-    </button>
-    <a href="/dishes" class="btn btn-cancel">Cancel</a>
+    <label>Chef:</label><br>
+    <select name="chefId">
+        <option value="">-- Select Chef (Optional) --</option>
+        <option th:each="chef : ${chefs}"
+                th:value="${chef.id}"
+                th:text="${chef.firstName + ' ' + chef.lastName}"
+                th:selected="${dish != null && dish.chef != null && dish.chef.id == chef.id}"></option>
+    </select><br><br>
+
+    <button type="submit" th:text="${dish != null ? 'Update Dish' : 'Add Dish'}">Submit</button>
+    <a href="/dishes"><button type="button">Cancel</button></a>
 </form>
 </body>
 </html>

@@ -1,24 +1,20 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Chef;
-import mk.ukim.finki.wp.lab.model.Dish;
+import mk.ukim.finki.wp.lab.model.Gender;
 import mk.ukim.finki.wp.lab.repository.ChefRepository;
-import mk.ukim.finki.wp.lab.repository.DishRepository;
 import mk.ukim.finki.wp.lab.service.ChefService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ChefServiceImpl implements ChefService {
 
     private final ChefRepository chefRepository;
-    private final DishRepository dishRepository;
 
-    public ChefServiceImpl(ChefRepository chefRepository, DishRepository dishRepository) {
+    public ChefServiceImpl(ChefRepository chefRepository) {
         this.chefRepository = chefRepository;
-        this.dishRepository = dishRepository;
     }
 
     @Override
@@ -32,20 +28,23 @@ public class ChefServiceImpl implements ChefService {
     }
 
     @Override
-    public Chef addDishToChef(Long chefId, String dishId) {
-        Optional<Chef> chefOptional = chefRepository.findById(chefId);
-        if (chefOptional.isEmpty()) {
-            return null;
-        }
-
-        Dish dish = dishRepository.findByDishId(dishId);
-        if (dish == null) {
-            return null;
-        }
-
-        Chef chef = chefOptional.get();
-        chef.addDish(dish);
-
+    public Chef create(String firstName, String lastName, String bio, Gender gender) {
+        Chef chef = new Chef(firstName, lastName, bio, gender);
         return chefRepository.save(chef);
+    }
+
+    @Override
+    public Chef update(Long id, String firstName, String lastName, String bio, Gender gender) {
+        Chef chef = chefRepository.findById(id).orElseThrow(() -> new RuntimeException("Chef not found"));
+        chef.setFirstName(firstName);
+        chef.setLastName(lastName);
+        chef.setBio(bio);
+        chef.setGender(gender);
+        return chefRepository.save(chef);
+    }
+
+    @Override
+    public void delete(Long id) {
+        chefRepository.deleteById(id);
     }
 }
